@@ -2,9 +2,11 @@
 @rendermode InteractiveServer
 
 @using BlazingPizza.Components.Shared
+@using BlazingPizza.Services
 
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
+@inject OrderState OrderState
 
 <PageTitle>Home</PageTitle>
 
@@ -15,7 +17,7 @@
         {
             @foreach (var special in specials)
             {
-                <li @onclick="@(() => ShowConfigurePizzaDialog(special))" style="background-image: url('@special.ImageUrl')">
+                <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(special))" style="background-image: url('@special.ImageUrl')">
                     <div class="pizza-info">
                         <span class="title">@special.Name</span>
                         @special.Description
@@ -27,27 +29,13 @@
     </ul>
 </div>
 
-@if (showingConfigureDialog)
+@if (OrderState.ShowingConfigureDialog)
 {
-    <ConfigurePizzaDialog Pizza="configuringPizza" />
+    <ConfigurePizzaDialog Pizza="OrderState.ConfiguringPizza" />
 }
 
 @code {
     List<PizzaSpecial> specials = new();
-    Pizza? configuringPizza;
-    bool showingConfigureDialog;
-
-    void ShowConfigurePizzaDialog(PizzaSpecial special)
-    {
-        configuringPizza = new Pizza()
-            {
-                Special = special,
-                SpecialId = special.Id,
-                Size = Pizza.DefaultSize
-            };
-
-        showingConfigureDialog = true;
-    }
 
     protected override async Task OnInitializedAsync()
     {
