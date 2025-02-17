@@ -182,7 +182,7 @@ h1:focus {
     }
 
         .order-total .total-price::before {
-            content: '£';
+            content: '$';
             font-weight: 300;
             margin: 0 0.1rem 0 0.4rem;
         }
@@ -239,7 +239,7 @@ h1:focus {
 }
 
     .item-price::before {
-        content: '£';
+        content: '$';
         font-weight: 100;
         margin-right: 0.3rem;
     }
@@ -388,5 +388,5 @@ h1:focus {
 }
 
     .dialog .topping-price::before {
-        content: '£';
+        content: '$';
     }
