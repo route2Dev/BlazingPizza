@@ -15,6 +15,8 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.UseStatusCodePagesWithReExecute("/not-found");
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
