@@ -8,34 +8,53 @@
 @inject OrderState OrderState
 
 <div class="main">
-  <div class="checkout-cols">
-    <div class="checkout-order-details">
-      <h4>Review order</h4>
-      @foreach (var pizza in Order.Pizzas)
-      {
-        <p>
-          <strong>
-            @(pizza.Size)"
-            @pizza.Special.Name
-            ($@pizza.GetFormattedTotalPrice())
-          </strong>
-        </p>
-      }
+    <div class="checkout-cols">
+        <div class="checkout-order-details">
+            <h4>Review order</h4>
+            @foreach (var pizza in Order.Pizzas)
+            {
+                <p>
+                    <strong>
+                        @(pizza.Size)"
+                        @pizza.Special.Name
+                        ($@pizza.GetFormattedTotalPrice())
+                    </strong>
+                </p>
+            }
 
-      <p>
-        <strong>
-          Total price:
-          @Order.GetFormattedTotalPrice()
-        </strong>
-      </p>
+            <p>
+                <strong>
+                    Total price:
+                    @Order.GetFormattedTotalPrice()
+                </strong>
+            </p>
+        </div>
     </div>
-  </div>
 
-  <button class="checkout-button btn btn-warning">
-    Place order
-  </button>
+    <button class="checkout-button btn btn-warning" @onclick="PlaceOrder" disabled=@isSubmitting>
+        Place order
+    </button>
 </div>
 
 @code {
-  Order Order => OrderState.Order;
+    Order Order => OrderState.Order;
+
+    bool isSubmitting;
+
+    async Task PlaceOrder()
+    {
+        isSubmitting = true;
+        var response = await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri + "orders", OrderState.Order);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var reason = await response.Content.ReadAsStringAsync();
+            System.Diagnostics.Debug.WriteLine($"Bad Request: {reason}");
+        }
+
+        int newOrderId = await response.Content.ReadFromJsonAsync<int>();        
+
+        OrderState.ResetOrder();
+        NavigationManager.NavigateTo("/");
+    }
 }
