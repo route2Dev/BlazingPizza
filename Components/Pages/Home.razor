@@ -1,10 +1,9 @@
 ﻿@page "/"
 @rendermode InteractiveServer
+@inherits MvvmComponent<HomeViewModel>
 
-@using BlazingPizza.Components.Shared
 @using BlazingPizza.Services
 
-@inject HomeViewModel ViewModel
 
 <PageTitle>Home</PageTitle>
 
@@ -72,13 +71,4 @@
 {
     <ConfigurePizzaDialog Pizza="ViewModel.CurrentPizza" OnCancel="ViewModel.CancelConfigurePizzaDialog"
         OnConfirm="ViewModel.ConfirmConfigurePizzaDialog" />
-}
-
-@code {
-    List<PizzaSpecial> specials = new();    
-
-    protected override async Task OnInitializedAsync()
-    {
-       await ViewModel.LoadSpecials();
-    }
 }

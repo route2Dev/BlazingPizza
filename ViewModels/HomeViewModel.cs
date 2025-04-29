@@ -3,7 +3,7 @@ using BlazingPizza.Services;
 
 namespace BlazingPizza.ViewModels;
 
-public class HomeViewModel(IHttpClientFactoryService httpClientFactoryService, OrderService orderService)
+public class HomeViewModel(IHttpClientFactoryService httpClientFactoryService, OrderService orderService): ViewModelBase
 {
     private readonly HttpClient _httpClient = httpClientFactoryService.CreateClient();
 
@@ -57,5 +57,12 @@ public class HomeViewModel(IHttpClientFactoryService httpClientFactoryService, O
     public void RemovePizza(Pizza pizza)
     {
         _orderService.RemovePizzaFromOrder(pizza);
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await LoadSpecials();
+        
+        await base.InitializeAsync();
     }
 }
