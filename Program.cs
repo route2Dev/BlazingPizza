@@ -1,6 +1,8 @@
 using BlazingPizza.Components;
 using BlazingPizza.Data;
 using BlazingPizza.Services;
+using BlazingPizza.ViewModels;
+using Microsoft.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,12 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("default");
+builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
+
 builder.Services.AddSqlite<PizzaStoreContext>("Data Source=pizza.db");
 builder.Services.AddControllers();
 
 // custom services
+builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<OrderState>();
+
+// view models
+builder.Services.AddScoped<HomeViewModel>();
 
 var app = builder.Build();
 

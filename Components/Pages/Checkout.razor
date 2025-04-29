@@ -5,7 +5,7 @@
 
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
-@inject OrderState OrderState
+@inject OrderService OrderState
 
 <div class="main">
     <div class="checkout-cols">
@@ -37,14 +37,14 @@
 </div>
 
 @code {
-    Order Order => OrderState.Order;
+    Order Order => OrderState.CurrentOrder;
 
     bool isSubmitting;
 
     async Task PlaceOrder()
     {
         isSubmitting = true;
-        var response = await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri + "orders", OrderState.Order);
+        var response = await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri + "orders", OrderState.CurrentOrder);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -54,7 +54,7 @@
 
         int newOrderId = await response.Content.ReadFromJsonAsync<int>();        
 
-        OrderState.ResetOrder();
+        OrderState.ClearOrder();
         NavigationManager.NavigateTo("/");
     }
 }
