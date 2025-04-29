@@ -2,7 +2,6 @@ using BlazingPizza.Components;
 using BlazingPizza.Data;
 using BlazingPizza.Services;
 using BlazingPizza.ViewModels;
-using Microsoft.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,10 +17,10 @@ builder.Services.AddControllers();
 
 // custom services
 builder.Services.AddScoped<OrderService>();
-builder.Services.AddScoped<OrderState>();
 
 // view models
 builder.Services.AddScoped<HomeViewModel>();
+builder.Services.AddScoped<CheckoutViewModel>();
 
 var app = builder.Build();
 
