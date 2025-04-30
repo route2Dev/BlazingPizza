@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazingPizza.ViewModels;
 
-public class CheckoutViewModel(IHttpClientFactoryService httpClientFactoryService, OrderService orderService, NavigationManager navigationManager, ILogger<CheckoutViewModel> logger) 
+public class CheckoutViewModel(IHttpClientFactoryService httpClientFactoryService, OrderService orderService, NavigationManager navigationManager, ILogger<CheckoutViewModel> logger) : ViewModelBase
 {
     private readonly HttpClient _httpClient = httpClientFactoryService.CreateClient();
 

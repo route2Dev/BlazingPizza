@@ -3,7 +3,8 @@ using BlazingPizza.Services;
 
 namespace BlazingPizza.ViewModels;
 
-public class HomeViewModel(IHttpClientFactoryService httpClientFactoryService, OrderService orderService): ViewModelBase
+public class HomeViewModel(IHttpClientFactoryService httpClientFactoryService, OrderService orderService) 
+    : ViewModelBase
 {
     private readonly HttpClient _httpClient = httpClientFactoryService.CreateClient();
 
@@ -11,13 +12,13 @@ public class HomeViewModel(IHttpClientFactoryService httpClientFactoryService, O
 
     public Order CurrentOrder => _orderService.CurrentOrder;
 
-    public Pizza? CurrentPizza {get; private set;} = null;
+    public Pizza? CurrentPizza { get; private set; } = null;
 
     public List<PizzaSpecial> Specials { get; private set; } = [];
 
     public bool ShowConfigureDialog { get; private set; } = false;
 
-    public async Task LoadSpecials()
+    public async Task LoadSpecialsAsync()
     {
         Specials = await _httpClient.GetFromJsonAsync<List<PizzaSpecial>>("specials") ?? [];
     }
@@ -30,7 +31,7 @@ public class HomeViewModel(IHttpClientFactoryService httpClientFactoryService, O
             SpecialId = special.Id,
             Size = Pizza.DefaultSize,
             Toppings = []
-        };     
+        };
 
         ShowConfigureDialog = true;
     }
@@ -61,8 +62,8 @@ public class HomeViewModel(IHttpClientFactoryService httpClientFactoryService, O
 
     public override async Task InitializeAsync()
     {
-        await LoadSpecials();
-        
+        await LoadSpecialsAsync();
+
         await base.InitializeAsync();
     }
 }
