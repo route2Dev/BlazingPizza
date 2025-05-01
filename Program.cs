@@ -2,6 +2,7 @@ using BlazingPizza.Components;
 using BlazingPizza.Data;
 using BlazingPizza.Services;
 using BlazingPizza.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,11 @@ builder.Services.AddRazorComponents()
 builder.Services.AddHttpClient("default");
 builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
 
-builder.Services.AddSqlite<PizzaStoreContext>("Data Source=pizza.db");
+// builder.Services.AddSqlite<PizzaStoreContext>("Data Source=pizza.db");
+builder.Services.AddDbContext<PizzaStoreContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PizzaStoreConnection")));
+
+
 builder.Services.AddControllers();
 
 // custom services
